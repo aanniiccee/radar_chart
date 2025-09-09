@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/radar_chart.html"
+      "dest": "radar_chart.py"
     }
   ]
 }
