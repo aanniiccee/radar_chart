@@ -2,7 +2,7 @@ name: Update Radar Chart
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # รันทุก 10 นาที
+    # - cron: "*/10 * * * *"  # รันทุก 10 นาที
   workflow_dispatch:        # สามารถสั่งรันด้วยมือ
 
 jobs:
