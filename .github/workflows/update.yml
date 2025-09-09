@@ -8,15 +8,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - run: pip install pandas plotly
-      - run: python radar_chart.py  # สร้าง radar_chart.html
+
+      - name: Install dependencies
+        run: pip install pandas plotly
+
+      - name: Run radar chart script
+        run: python radar_chart.py  # สร้าง radar_chart.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./  # directory ที่มี radar_chart.html
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # ใช้ token อัตโนมัติ
           publish_branch: gh-pages
+          publish_dir: ./  # ที่อยู่ของ radar_chart.html
