@@ -1,0 +1,33 @@
+name: Update Radar Chart
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # รันทุก 10 นาที
+  workflow_dispatch:        # สามารถสั่งรันด้วยมือ
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run radar chart script
+        run: python radar_chart.py
+
+      - name: Commit HTML
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "actions@github.com"
+          git add radar_chart.html
+          git commit -m "Update radar chart"
+          git push
