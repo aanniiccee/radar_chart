@@ -1,9 +1,7 @@
 name: Update Radar Chart
 
 on:
-  schedule:
-    - cron: "*/1800 * * * *"  # รันทุก 10 นาที
-  workflow_dispatch:        # สามารถสั่งรันด้วยมือ
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,7 +17,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install pandas plotly
 
       - name: Run radar chart script
         run: python radar_chart.py
@@ -30,4 +28,4 @@ jobs:
           git config --local user.email "actions@github.com"
           git add radar_chart.html
           git commit -m "Update radar chart"
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
