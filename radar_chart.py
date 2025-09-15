@@ -1,56 +1,59 @@
+from flask import Flask, Response
 import pandas as pd
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
-def app(request):
-    sheet_id = "1BmMyzeeSO8C0Q7wtpoAUFS_rbryQJs79wc2OibgZ8wU"
-    csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid=0"
+app = Flask(__name__)
 
-    df = pd.read_csv(csv_url)
+@app.route("/")
+def radar_charts():
+    # ---- ดึงข้อมูล "ก่อน evolve" ----
+    sheet_id_before = "SHEET_ID_BEFORE"
+    csv_url_before = f"https://docs.google.com/spreadsheets/d/{sheet_id_before}/export?format=csv&gid=0"
+    df_before = pd.read_csv(csv_url_before)
 
-    stats = [
-        "Service Excellence Mindset",
-        "Team Communication",
-        "Results with Responsibility",
-        "Innovative Process Excellence",
-        "Digital & Technology Proficiency"
-    ]
+    # ---- ดึงข้อมูล "หลัง evolve" ----
+    sheet_id_after = "SHEET_ID_AFTER"
+    csv_url_after = f"https://docs.google.com/spreadsheets/d/{sheet_id_after}/export?format=csv&gid=0"
+    df_after = pd.read_csv(csv_url_after)
 
-    fig = go.Figure()
+    stats = ["HP", "Attack", "Defense", "Sp. Atk", "Sp. Def"]
 
-    for _, row in df.iterrows():
+    # ---- สร้าง subplot สำหรับ radar chart 2 ตัว ----
+    fig = make_subplots(rows=1, cols=2, specs=[[{"type":"polar"},{"type":"polar"}]])
+
+    # Radar chart ก่อน evolve
+    for i, row in df_before.iterrows():
         values = row[stats].tolist()
         values += values[:1]
         categories = stats + [stats[0]]
-
         fig.add_trace(go.Scatterpolar(
             r=values,
             theta=categories,
             fill='toself',
             name=row["Name"]
-        ))
+        ), row=1, col=1)
+
+    # Radar chart หลัง evolve
+    for i, row in df_after.iterrows():
+        values = row[stats].tolist()
+        values += values[:1]
+        categories = stats + [stats[0]]
+        fig.add_trace(go.Scatterpolar(
+            r=values,
+            theta=categories,
+            fill='toself',
+            name=row["Name"]
+        ), row=1, col=2)
 
     fig.update_layout(
         polar=dict(radialaxis=dict(visible=True)),
         showlegend=True,
-        title="Competency Radar Chart"
+        title_text="Radar Chart Before & After Evolution",
     )
 
-    chart_html = fig.to_html(include_plotlyjs="cdn", full_html=False)
+    html = fig.to_html(include_plotlyjs="cdn")
+    return Response(html, mimetype="text/html")
 
-    html = f"""
-    <html>
-      <head>
-        <title>Radar Chart</title>
-      </head>
-      <body>
-        <h1>Competency Radar Chart</h1>
-        <div>{chart_html}</div>
-      </body>
-    </html>
-    """
-
-    return {
-        "statusCode": 200,
-        "headers": {"Content-Type": "text/html"},
-        "body": html
-    }
+if __name__ == "__main__":
+    app.run()
