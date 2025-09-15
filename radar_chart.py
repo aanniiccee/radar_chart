@@ -11,7 +11,7 @@ def radar_chart_before():
     csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid=0"
     df = pd.read_csv(csv_url)
 
-    stats = ["HP", "Attack", "Defense", "Sp. Atk", "Sp. Def"]
+    stats = ["Service Excellence Mindset", "Team Communication", "Results with Responsibility", "Innovative Process Excellence", "Digital & Technology Proficiency"]
     fig = go.Figure()
     for i, row in df.iterrows():
         values = row[stats].tolist()
@@ -27,7 +27,7 @@ def radar_chart_before():
     fig.update_layout(
         polar=dict(radialaxis=dict(visible=True)),
         showlegend=True,
-        title="Radar Chart Before Evolution"
+        title="Competency"
     )
 
     html = fig.to_html(include_plotlyjs="cdn")
