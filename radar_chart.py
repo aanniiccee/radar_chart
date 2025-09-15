@@ -53,7 +53,13 @@ def radar_chart():
             )
         ),
         showlegend=True,
-        title="Competency Before vs After"
+        legend=dict(
+            orientation="h",  # horizontal
+            y=-0.2,           # ย้ายลงข้างล่าง (ค่าลบ = อยู่ใต้กราฟ)
+            x=0.5,
+            xanchor='center'
+        ),
+        title=None
     )
 
     html = fig.to_html(include_plotlyjs="cdn")
