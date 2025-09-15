@@ -31,8 +31,9 @@ def radar_chart():
                 r=values,
                 theta=categories,
                 name="Before",
-                line=dict(color="yellow", dash="solid", width=3),  # เส้นประสีเหลือง
-                fill=None
+                line=dict(color="rgb(255,165,0)", dash="dash", width=3),  # ส้มเส้นประ
+                fill='toself',
+                fillcolor="rgba(255,165,0,0.2)"
             ))
         else:  # After
             fig.add_trace(go.Scatterpolar(
