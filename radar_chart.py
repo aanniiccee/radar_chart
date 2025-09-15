@@ -1,7 +1,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-def handler(request):
+def app(request):
     sheet_id = "1BmMyzeeSO8C0Q7wtpoAUFS_rbryQJs79wc2OibgZ8wU"
     csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid=0"
 
