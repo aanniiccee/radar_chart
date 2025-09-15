@@ -31,7 +31,7 @@ def radar_chart():
                 r=values,
                 theta=categories,
                 name="Before",
-                line=dict(color="yellow", dash="dash", width=3),  # เส้นประสีเหลือง
+                line=dict(color="yellow", dash="solid", width=3),  # เส้นประสีเหลือง
                 fill=None
             ))
         else:  # After
