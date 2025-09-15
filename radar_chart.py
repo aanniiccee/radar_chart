@@ -1,11 +1,7 @@
-from flask import Flask
 import pandas as pd
 import plotly.graph_objects as go
 
-app = Flask(__name__)
-
-@app.route("/")
-def index():
+def handler(request):
     sheet_id = "1BmMyzeeSO8C0Q7wtpoAUFS_rbryQJs79wc2OibgZ8wU"
     csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid=0"
 
@@ -41,7 +37,7 @@ def index():
 
     chart_html = fig.to_html(include_plotlyjs="cdn", full_html=False)
 
-    return f"""
+    html = f"""
     <html>
       <head>
         <title>Radar Chart</title>
@@ -53,5 +49,8 @@ def index():
     </html>
     """
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    return {
+        "statusCode": 200,
+        "headers": {"Content-Type": "text/html"},
+        "body": html
+    }
