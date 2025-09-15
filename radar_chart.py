@@ -25,10 +25,16 @@ def radar_chart_before():
         ))
 
     fig.update_layout(
-        polar=dict(radialaxis=dict(visible=True)),
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                range=[0, 100]
+            )
+        ),
         showlegend=True,
         title="Competency"
     )
+
 
     html = fig.to_html(include_plotlyjs="cdn")
     return Response(html, mimetype="text/html")
